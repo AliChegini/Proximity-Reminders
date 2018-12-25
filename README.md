@@ -4,11 +4,13 @@ You will need to use Core Location for geo-fencing, Core Data to save the remind
 
 The core objective is to create an app to display a local notification when entering or leaving a location. The app needs to allow the user to enter or search for a location and choose whether the reminder should be set for leaving or entering the location. For example, one should be able to set a reminder to pick up milk when close to a grocery store.
 
-Remember that if you put enough effort into the user experience and design of the app, it can serve as a portfolio piece. Don't forget to architect the app with readable and maintainable code.
-
+Don't forget to architect the app with readable and maintainable code.
 At a minimum, your app should include the following features:
 
 A basic master-detail view architecture
+
 Ability to create reminders
+
 Ability to edit and/or delete existing reminders
+
 Geo-fence a reminder to a location so that you can display an alert notification when leaving or entering the location
