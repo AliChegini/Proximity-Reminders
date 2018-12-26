@@ -22,23 +22,26 @@ class MasterViewController: UITableViewController {
         
     }
     
-    // MARK: - UITableViewDelegate
-    
-    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        return .delete
-    }
-    
-    
     // MARK: - Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "newReminder" {
             if let navigationController = segue.destination as? UINavigationController {
                 if let addReminderController = navigationController.topViewController as? AddReminderController {
-                    addReminderController.managedObjectContext = managedObjectContext
+                    addReminderController.context = managedObjectContext
+                }
+            }
+        } else if segue.identifier == "showDetail" {
+            if let navigationController  = segue.destination as? UINavigationController {
+                if let detailViewController = navigationController.topViewController as? DetailViewController, let indexPath = tableView.indexPathForSelectedRow {
+                    let item = fetchedResultsController.object(at: indexPath)
+                    detailViewController.reminder = item
+                    detailViewController.context = managedObjectContext
                 }
             }
         }
+        
+        
     }
 
     // MARK: - Table view data source
@@ -64,6 +67,16 @@ class MasterViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        
+        let item = fetchedResultsController.object(at: indexPath)
+        managedObjectContext.delete(item)
+        managedObjectContext.saveChanges()
     }
+    
+    
+    // MARK: - UITableViewDelegate
+    
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        return .delete
+    }
+    
 }

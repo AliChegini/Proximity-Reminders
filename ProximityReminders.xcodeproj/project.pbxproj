@@ -14,6 +14,7 @@
 		7C30DADD21D1212900BFEDB1 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C30DADC21D1212900BFEDB1 /* MasterViewController.swift */; };
 		7C30DADF21D1222500BFEDB1 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C30DADE21D1222500BFEDB1 /* DetailViewController.swift */; };
 		7C30DAE121D13B3A00BFEDB1 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C30DAE021D13B3A00BFEDB1 /* CoreDataStack.swift */; };
+		7C3239E121D3E7E800FC72EA /* DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C3239E021D3E7E800FC72EA /* DataSource.swift */; };
 		7C3543C221D22B6A00D2FC77 /* ProximityReminders.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7C3543C021D22B6A00D2FC77 /* ProximityReminders.xcdatamodeld */; };
 		7C3543C421D22E0300D2FC77 /* AddReminderController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C3543C321D22E0200D2FC77 /* AddReminderController.swift */; };
 		7C3543CF21D2872E00D2FC77 /* Reminder+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C3543CD21D2872E00D2FC77 /* Reminder+CoreDataClass.swift */; };
@@ -31,6 +32,7 @@
 		7C30DADC21D1212900BFEDB1 /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
 		7C30DADE21D1222500BFEDB1 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		7C30DAE021D13B3A00BFEDB1 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
+		7C3239E021D3E7E800FC72EA /* DataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSource.swift; sourceTree = "<group>"; };
 		7C3543C121D22B6A00D2FC77 /* ProximityReminders.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ProximityReminders.xcdatamodel; sourceTree = "<group>"; };
 		7C3543C321D22E0200D2FC77 /* AddReminderController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddReminderController.swift; sourceTree = "<group>"; };
 		7C3543CD21D2872E00D2FC77 /* Reminder+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Reminder+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -77,6 +79,7 @@
 				7C30DAE021D13B3A00BFEDB1 /* CoreDataStack.swift */,
 				7C3543CD21D2872E00D2FC77 /* Reminder+CoreDataClass.swift */,
 				7C3543CE21D2872E00D2FC77 /* Reminder+CoreDataProperties.swift */,
+				7C3239E021D3E7E800FC72EA /* DataSource.swift */,
 				7C3543C021D22B6A00D2FC77 /* ProximityReminders.xcdatamodeld */,
 				7C30DAD121D0F38700BFEDB1 /* Assets.xcassets */,
 				7C30DAD321D0F38700BFEDB1 /* LaunchScreen.storyboard */,
@@ -164,6 +167,7 @@
 				7C30DAE121D13B3A00BFEDB1 /* CoreDataStack.swift in Sources */,
 				7C3543C221D22B6A00D2FC77 /* ProximityReminders.xcdatamodeld in Sources */,
 				7C3543D221D28C1500D2FC77 /* ReminderFetchedResultsController.swift in Sources */,
+				7C3239E121D3E7E800FC72EA /* DataSource.swift in Sources */,
 				7C3543D021D2872E00D2FC77 /* Reminder+CoreDataProperties.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -7,16 +7,46 @@
 //
 
 import UIKit
+import CoreData
 
 class DetailViewController: UITableViewController {
 
-    var detail: String?
+    var reminder: Reminder?
+    
+    var context: NSManagedObjectContext!
+    
+    @IBOutlet weak var textField: UITextField!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        if let reminder = reminder {
+            textField.text = reminder.text
+        }
         
     }
+    
+    @IBAction func save(_ sender: UIBarButtonItem) {
+        
+        
+        
+        if let reminder = reminder, let newText = textField.text {
+            reminder.text = newText
+            context.saveChanges()
+            navigationController?.navigationController?.popViewController(animated: true)
+        }
+    }
+    
+    
+    @IBAction func deleteItem(_ sender: UIButton) {
+        if let reminder = reminder {
+            context.delete(reminder)
+            context.saveChanges()
+            navigationController?.navigationController?.popViewController(animated: true)
+        }
+    }
+    
 
     // MARK: - Table view data source
 
@@ -25,13 +55,13 @@ class DetailViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return 1
     }
 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell")!
-        
-        return cell
-    }
+//    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//        let cell = tableView.dequeueReusableCell(withIdentifier: "detailCell")!
+//
+//        return cell
+//    }
     
 }

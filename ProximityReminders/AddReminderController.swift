@@ -13,7 +13,7 @@ class AddReminderController: UIViewController {
     
     @IBOutlet weak var reminder: UITextField!
     // will be used to get the existing context from master view
-    var managedObjectContext: NSManagedObjectContext!
+    var context: NSManagedObjectContext!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,7 +23,7 @@ class AddReminderController: UIViewController {
     
     @IBAction func save(_ sender: UIBarButtonItem) {
         
-        guard let rm = NSEntityDescription.insertNewObject(forEntityName: "Reminder", into: managedObjectContext) as? Reminder else {
+        guard let rm = NSEntityDescription.insertNewObject(forEntityName: "Reminder", into: context) as? Reminder else {
             return
         }
         
@@ -32,7 +32,7 @@ class AddReminderController: UIViewController {
         }
         
         rm.text = text
-        managedObjectContext.saveChanges()
+        context.saveChanges()
         
         dismiss(animated: true, completion: nil)
     }
