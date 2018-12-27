@@ -13,12 +13,15 @@ class MasterViewController: UITableViewController {
     
     var managedObjectContext = CoreDataStack().managedObjectContext
     
-    lazy var fetchedResultsController: ReminderFetchedResultsController = {
-        return ReminderFetchedResultsController(managedObjectContext: self.managedObjectContext, tableView: self.tableView)
+    lazy var dataSource: DataSource = {
+        return DataSource(tableView: self.tableView, context: self.managedObjectContext)
     }()
-
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        tableView.dataSource = dataSource
         
     }
     
@@ -34,45 +37,15 @@ class MasterViewController: UITableViewController {
         } else if segue.identifier == "showDetail" {
             if let navigationController  = segue.destination as? UINavigationController {
                 if let detailViewController = navigationController.topViewController as? DetailViewController, let indexPath = tableView.indexPathForSelectedRow {
-                    let item = fetchedResultsController.object(at: indexPath)
+                    let item = dataSource.object(at: indexPath)
                     detailViewController.reminder = item
                     detailViewController.context = managedObjectContext
                 }
             }
         }
-        
-        
     }
+    
 
-    // MARK: - Table view data source
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return fetchedResultsController.sections?.count ?? 0
-    }
-    
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let section = fetchedResultsController.sections?[section] else {
-            return 0
-        }
-        return section.numberOfObjects
-    }
-    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell")!
-        let item = fetchedResultsController.object(at: indexPath)
-        
-        cell.textLabel?.text = item.text
-        
-        return cell
-    }
-    
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        let item = fetchedResultsController.object(at: indexPath)
-        managedObjectContext.delete(item)
-        managedObjectContext.saveChanges()
-    }
-    
-    
     // MARK: - UITableViewDelegate
     
     override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
