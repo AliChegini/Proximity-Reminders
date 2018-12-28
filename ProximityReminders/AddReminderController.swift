@@ -12,7 +12,8 @@ import MapKit
 
 class AddReminderController: UIViewController, UISearchBarDelegate {
     
-    @IBOutlet weak var reminder: UITextField!
+    @IBOutlet weak var textField: UITextField!
+    
     // will be used to get the existing context from master view
     var context: NSManagedObjectContext!
     
@@ -61,17 +62,21 @@ class AddReminderController: UIViewController, UISearchBarDelegate {
                 self.mapView.removeAnnotations(annotations)
                 
                 // Getting coordinate
-                let latitude = response?.boundingRegion.center.latitude
-                let longitude = response?.boundingRegion.center.longitude
+                guard let latitude = response?.boundingRegion.center.latitude else {
+                    return
+                }
+                guard let longitude = response?.boundingRegion.center.longitude else {
+                    return
+                }
                 
                 // Create annotations
                 let annotation = MKPointAnnotation()
                 annotation.title = searchBar.text
-                annotation.coordinate = CLLocationCoordinate2DMake(latitude!, longitude!)
+                annotation.coordinate = CLLocationCoordinate2DMake(latitude, longitude)
                 self.mapView.addAnnotation(annotation)
                 
                 // Zooming on annotation
-                let coordinate: CLLocationCoordinate2D = CLLocationCoordinate2DMake(latitude!, longitude!)
+                let coordinate: CLLocationCoordinate2D = CLLocationCoordinate2DMake(latitude, longitude)
                 let span = MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
                 let region = MKCoordinateRegion(center: coordinate, span: span)
                 self.mapView.setRegion(region, animated: true)
@@ -84,17 +89,17 @@ class AddReminderController: UIViewController, UISearchBarDelegate {
     
     @IBAction func save(_ sender: UIBarButtonItem) {
         
-        guard let rm = NSEntityDescription.insertNewObject(forEntityName: "Reminder", into: context) as? Reminder else {
+        guard let reminder = NSEntityDescription.insertNewObject(forEntityName: "Reminder", into: context) as? Reminder else {
             return
         }
         
-        guard let text = reminder.text, !text.isEmpty else {
+        guard let text = textField.text, !text.isEmpty else {
             return
         }
         
-        rm.text = text
+        reminder.text = text
+        
         context.saveChanges()
-        
         dismiss(animated: true, completion: nil)
     }
     

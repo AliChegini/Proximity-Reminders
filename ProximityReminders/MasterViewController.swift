@@ -8,8 +8,9 @@
 
 import UIKit
 import CoreData
+import CoreLocation
 
-class MasterViewController: UITableViewController {
+class MasterViewController: UITableViewController, CLLocationManagerDelegate {
     
     var managedObjectContext = CoreDataStack().managedObjectContext
     
@@ -17,11 +18,16 @@ class MasterViewController: UITableViewController {
         return DataSource(tableView: self.tableView, context: self.managedObjectContext)
     }()
     
+    let locationManager = CLLocationManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         tableView.dataSource = dataSource
+        
+        locationManager.delegate = self
+        locationManager.requestAlwaysAuthorization()
+        
         
     }
     

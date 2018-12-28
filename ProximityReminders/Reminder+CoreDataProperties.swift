@@ -19,6 +19,6 @@ extension Reminder {
         return request
     }
 
-    @NSManaged public var text: String?
+    @NSManaged public var text: String
 
 }
