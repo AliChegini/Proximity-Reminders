@@ -9,8 +9,9 @@
 import UIKit
 import CoreData
 import CoreLocation
+import UserNotifications
 
-class MasterViewController: UITableViewController, CLLocationManagerDelegate {
+class MasterViewController: UITableViewController, CLLocationManagerDelegate, UNUserNotificationCenterDelegate {
     
     var managedObjectContext = CoreDataStack().managedObjectContext
     
@@ -25,9 +26,19 @@ class MasterViewController: UITableViewController, CLLocationManagerDelegate {
         
         tableView.dataSource = dataSource
         
-        locationManager.delegate = self
-        locationManager.requestAlwaysAuthorization()
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { (didallow, error) in
+            
+        }
         
+        setupNotification()
+        
+    
+        // Location related 
+//        locationManager.delegate = self
+//        locationManager.requestAlwaysAuthorization()
+//        locationManager.startUpdatingLocation()
+//        locationManager.distanceFilter = 100
+//        let geoFenceRegion: CLCircularRegion = CLCircularRegion(center: CLLocationCoordinate2DMake(item.latitude, item.longitude), radius: 40, identifier: item.text)
         
     }
     
@@ -48,6 +59,29 @@ class MasterViewController: UITableViewController, CLLocationManagerDelegate {
                     detailViewController.context = managedObjectContext
                 }
             }
+        }
+    }
+    
+    // Creating notification
+    func setupNotification() {
+        let content = UNMutableNotificationContent()
+        content.title = "Test Title"
+        content.subtitle = "Test SubTitle"
+        content.body = "Test Body"
+        content.badge = 1
+        content.sound = UNNotificationSound.default
+        
+        
+        //getting the notification trigger
+        //it will be called after 5 seconds
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 3.0, repeats: false)
+        
+        //create notification request
+        let request = UNNotificationRequest(identifier: "SimplifiedIOSNotification", content: content, trigger: trigger)
+        
+        //adding the notification to notification center
+        UNUserNotificationCenter.current().add(request) { (error) in
+            
         }
     }
     

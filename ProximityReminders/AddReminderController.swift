@@ -11,19 +11,24 @@ import CoreData
 import MapKit
 
 class AddReminderController: UIViewController, UISearchBarDelegate {
-    
-    @IBOutlet weak var textField: UITextField!
-    
-    // will be used to get the existing context from master view
+
+    // context will be used to get the existing context from master view
     var context: NSManagedObjectContext!
     
-    
+    @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var switchOutlet: UISwitch!
+    
+    // Variables to be used for saving in Core Data
+    var storedLatitude: Double?
+    var storedLongitude: Double?
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
     }
+    
     
     @IBAction func searchButton(_ sender: Any) {
         let searchController = UISearchController(searchResultsController: nil)
@@ -36,9 +41,6 @@ class AddReminderController: UIViewController, UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         // ignoring user interactions
         UIApplication.shared.beginIgnoringInteractionEvents()
-        
-        // Activitiy indicator
-        // TODO:
         
         // Hide search bar
         searchBar.resignFirstResponder()
@@ -61,13 +63,16 @@ class AddReminderController: UIViewController, UISearchBarDelegate {
                 let annotations = self.mapView.annotations
                 self.mapView.removeAnnotations(annotations)
                 
-                // Getting coordinate
+                // Getting coordinates
                 guard let latitude = response?.boundingRegion.center.latitude else {
                     return
                 }
                 guard let longitude = response?.boundingRegion.center.longitude else {
                     return
                 }
+                
+                self.storedLatitude = latitude
+                self.storedLongitude = longitude
                 
                 // Create annotations
                 let annotation = MKPointAnnotation()
@@ -83,7 +88,6 @@ class AddReminderController: UIViewController, UISearchBarDelegate {
             }
         }
         
-        
     }
     
     
@@ -98,6 +102,12 @@ class AddReminderController: UIViewController, UISearchBarDelegate {
         }
         
         reminder.text = text
+        reminder.reminderState = switchOutlet.isOn
+        
+        if let storedLatitude = storedLatitude, let storedLongitude = storedLongitude {
+            reminder.latitude = storedLatitude
+            reminder.longitude = storedLongitude
+        }
         
         context.saveChanges()
         dismiss(animated: true, completion: nil)

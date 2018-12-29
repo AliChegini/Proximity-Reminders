@@ -97,27 +97,41 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9Bw-Tt-49b">
-                                <rect key="frame" x="20" y="104" width="335" height="30"/>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Reminder Text" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9Bw-Tt-49b">
+                                <rect key="frame" x="30" y="104" width="315" height="30"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="HPv-D8-TV6">
-                                <rect key="frame" x="30" y="164" width="315" height="473"/>
+                                <rect key="frame" x="30" y="194" width="315" height="443"/>
                                 <connections>
                                     <outlet property="delegate" destination="PhC-Ab-kcw" id="4Hn-gg-tjK"/>
                                 </connections>
                             </mapView>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rCs-GM-JjZ">
+                                <rect key="frame" x="296" y="144" width="51" height="31"/>
+                            </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Remind me at this location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Prm-x8-aPg">
+                                <rect key="frame" x="30" y="149" width="246" height="21"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="9Bw-Tt-49b" firstAttribute="leading" secondItem="sPU-bM-rx9" secondAttribute="leading" constant="20" id="3iV-Ms-u3P"/>
+                            <constraint firstItem="rCs-GM-JjZ" firstAttribute="top" secondItem="9Bw-Tt-49b" secondAttribute="bottom" constant="10" id="0aF-X9-bRw"/>
+                            <constraint firstItem="Prm-x8-aPg" firstAttribute="leading" secondItem="sPU-bM-rx9" secondAttribute="leading" constant="30" id="3Q5-Iw-FVv"/>
+                            <constraint firstItem="9Bw-Tt-49b" firstAttribute="leading" secondItem="sPU-bM-rx9" secondAttribute="leading" constant="30" id="3iV-Ms-u3P"/>
                             <constraint firstItem="sPU-bM-rx9" firstAttribute="bottom" secondItem="HPv-D8-TV6" secondAttribute="bottom" constant="30" id="Gi7-fr-cOF"/>
-                            <constraint firstItem="HPv-D8-TV6" firstAttribute="top" secondItem="9Bw-Tt-49b" secondAttribute="bottom" constant="30" id="H46-yC-tOF"/>
-                            <constraint firstItem="sPU-bM-rx9" firstAttribute="trailing" secondItem="9Bw-Tt-49b" secondAttribute="trailing" constant="20" id="Jzu-YO-O41"/>
+                            <constraint firstItem="HPv-D8-TV6" firstAttribute="top" secondItem="9Bw-Tt-49b" secondAttribute="bottom" constant="60" id="H46-yC-tOF"/>
+                            <constraint firstItem="sPU-bM-rx9" firstAttribute="trailing" secondItem="9Bw-Tt-49b" secondAttribute="trailing" constant="30" id="Jzu-YO-O41"/>
+                            <constraint firstItem="sPU-bM-rx9" firstAttribute="trailing" secondItem="rCs-GM-JjZ" secondAttribute="trailing" constant="30" id="Zyn-Nk-Jdu"/>
                             <constraint firstItem="HPv-D8-TV6" firstAttribute="leading" secondItem="sPU-bM-rx9" secondAttribute="leading" constant="30" id="boQ-bI-Iia"/>
                             <constraint firstItem="sPU-bM-rx9" firstAttribute="trailing" secondItem="HPv-D8-TV6" secondAttribute="trailing" constant="30" id="pjR-bs-mE0"/>
+                            <constraint firstItem="Prm-x8-aPg" firstAttribute="top" secondItem="9Bw-Tt-49b" secondAttribute="bottom" constant="15" id="szs-bi-bMG"/>
+                            <constraint firstItem="rCs-GM-JjZ" firstAttribute="leading" secondItem="Prm-x8-aPg" secondAttribute="trailing" constant="20" id="tnK-V8-sYt"/>
                             <constraint firstItem="9Bw-Tt-49b" firstAttribute="top" secondItem="sPU-bM-rx9" secondAttribute="top" constant="40" id="v2b-hX-u0L"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="sPU-bM-rx9"/>
@@ -143,6 +157,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="mapView" destination="HPv-D8-TV6" id="2Ev-Un-16p"/>
+                        <outlet property="switchOutlet" destination="rCs-GM-JjZ" id="FZF-Uo-J2C"/>
                         <outlet property="textField" destination="9Bw-Tt-49b" id="Sqd-tH-u6j"/>
                     </connections>
                 </viewController>
