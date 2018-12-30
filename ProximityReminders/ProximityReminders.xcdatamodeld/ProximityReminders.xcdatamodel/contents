@@ -2,11 +2,12 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14460.32" systemVersion="18C54" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Reminder" representedClassName=".Reminder" syncable="YES">
         <attribute name="latitude" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="locationName" attributeType="String" syncable="YES"/>
         <attribute name="longitude" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="reminderState" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="text" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Reminder" positionX="-63" positionY="-18" width="128" height="105"/>
+        <element name="Reminder" positionX="-63" positionY="-18" width="128" height="120"/>
     </elements>
 </model>

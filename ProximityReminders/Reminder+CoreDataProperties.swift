@@ -23,5 +23,6 @@ extension Reminder {
     @NSManaged public var reminderState: Bool
     @NSManaged public var latitude: Double
     @NSManaged public var longitude: Double
+    @NSManaged public var locationName: String
 
 }

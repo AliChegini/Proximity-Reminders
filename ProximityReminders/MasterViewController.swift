@@ -26,13 +26,6 @@ class MasterViewController: UITableViewController, CLLocationManagerDelegate, UN
         
         tableView.dataSource = dataSource
         
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { (didallow, error) in
-            
-        }
-        
-        setupNotification()
-        
-    
         // Location related 
 //        locationManager.delegate = self
 //        locationManager.requestAlwaysAuthorization()
@@ -59,29 +52,6 @@ class MasterViewController: UITableViewController, CLLocationManagerDelegate, UN
                     detailViewController.context = managedObjectContext
                 }
             }
-        }
-    }
-    
-    // Creating notification
-    func setupNotification() {
-        let content = UNMutableNotificationContent()
-        content.title = "Test Title"
-        content.subtitle = "Test SubTitle"
-        content.body = "Test Body"
-        content.badge = 1
-        content.sound = UNNotificationSound.default
-        
-        
-        //getting the notification trigger
-        //it will be called after 5 seconds
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 3.0, repeats: false)
-        
-        //create notification request
-        let request = UNNotificationRequest(identifier: "SimplifiedIOSNotification", content: content, trigger: trigger)
-        
-        //adding the notification to notification center
-        UNUserNotificationCenter.current().add(request) { (error) in
-            
         }
     }
     

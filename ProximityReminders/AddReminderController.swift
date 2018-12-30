@@ -22,6 +22,7 @@ class AddReminderController: UIViewController, UISearchBarDelegate {
     // Variables to be used for saving in Core Data
     var storedLatitude: Double?
     var storedLongitude: Double?
+    var storedLocationName: String?
     
     
     override func viewDidLoad() {
@@ -73,6 +74,7 @@ class AddReminderController: UIViewController, UISearchBarDelegate {
                 
                 self.storedLatitude = latitude
                 self.storedLongitude = longitude
+                self.storedLocationName = searchBar.text
                 
                 // Create annotations
                 let annotation = MKPointAnnotation()
@@ -104,9 +106,10 @@ class AddReminderController: UIViewController, UISearchBarDelegate {
         reminder.text = text
         reminder.reminderState = switchOutlet.isOn
         
-        if let storedLatitude = storedLatitude, let storedLongitude = storedLongitude {
+        if let storedLatitude = storedLatitude, let storedLongitude = storedLongitude, let storedLocationName = storedLocationName {
             reminder.latitude = storedLatitude
             reminder.longitude = storedLongitude
+            reminder.locationName = storedLocationName
         }
         
         context.saveChanges()
