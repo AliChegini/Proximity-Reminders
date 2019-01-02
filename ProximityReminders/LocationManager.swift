@@ -9,59 +9,39 @@
 import Foundation
 import CoreLocation
 
-//enum LocationError: Error {
-//    case unknownError
-//    case disallowedByUser
-//    case unableToFindLocation
-//}
-//
-//protocol LocationPermissionDelegate: class {
-//    func authorizationSucceeded()
-//    func authorizationFailedWithStatus(_ status: CLAuthorizationStatus)
-//}
-//
-//
-//class LocationManager: NSObject, CLLocationManagerDelegate {
-//    private let manager = CLLocationManager()
-//    weak var permissionDelegate: LocationPermissionDelegate?
-//
-//    override init() {
-//        super.init()
-//        manager.delegate = self
-//    }
-//
-//    func requestLocationAuthorization() throws {
-//        let authorizationStatus = CLLocationManager.authorizationStatus()
-//
-//        if authorizationStatus == .restricted || authorizationStatus == .denied {
-//            throw LocationError.disallowedByUser
-//        } else if authorizationStatus == .notDetermined {
-//            manager.requestAlwaysAuthorization()
-//        } else {
-//            return
-//        }
-//    }
-//
-//
-//    func requestLocationPermission() {
-//        do {
-//            try self.requestLocationAuthorization()
-//        } catch LocationError.disallowedByUser {
-//            // show alert to user
-//        } catch {
-//            print("Location Authorization Error : \(error.localizedDescription)")
-//        }
-//    }
-//
-//
-//    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-//        if status == .authorizedWhenInUse {
-//            permissionDelegate?.authorizationSucceeded()
-//        } else {
-//            permissionDelegate?.authorizationFailedWithStatus(status)
-//        }
-//    }
-//
-//
-//}
-//
+protocol LocationManagerDelegate: class {
+    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion)
+    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion)
+}
+
+
+class LocationManager: NSObject, CLLocationManagerDelegate {
+    private let manager = CLLocationManager()
+    
+    weak var delegate: LocationManagerDelegate?
+    
+    override init() {
+        super.init()
+        manager.delegate = self
+        manager.requestAlwaysAuthorization()
+    }
+    
+    func setupGeoFenceAndMonitor(latitude: Double, longitude: Double, locationName: String) {
+        let geoFence: CLCircularRegion = CLCircularRegion(center: CLLocationCoordinate2DMake(latitude, longitude), radius: 50, identifier: locationName)
+        manager.startMonitoring(for: geoFence)
+    }
+
+}
+
+
+extension LocationManager {
+    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
+        delegate?.locationManager(manager, didEnterRegion: region)
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
+        delegate?.locationManager(manager, didExitRegion: region)
+    }
+}
+
+

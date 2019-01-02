@@ -9,11 +9,15 @@
 import UIKit
 import CoreData
 import MapKit
+import CoreLocation
 
 class AddReminderController: UIViewController, UISearchBarDelegate {
 
     // context will be used to get the existing context from master view
     var context: NSManagedObjectContext!
+    
+    // manager will be used to get the existing manager from master view
+    var manager: LocationManager!
     
     @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var mapView: MKMapView!
@@ -27,7 +31,7 @@ class AddReminderController: UIViewController, UISearchBarDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
     }
     
     
@@ -103,13 +107,20 @@ class AddReminderController: UIViewController, UISearchBarDelegate {
             return
         }
         
+        guard let storedLatitude = storedLatitude, let storedLongitude = storedLongitude, let storedLocationName = storedLocationName else {
+            return
+        }
+        
         reminder.text = text
         reminder.reminderState = switchOutlet.isOn
+        reminder.latitude = storedLatitude
+        reminder.longitude = storedLongitude
+        reminder.locationName = storedLocationName
         
-        if let storedLatitude = storedLatitude, let storedLongitude = storedLongitude, let storedLocationName = storedLocationName {
-            reminder.latitude = storedLatitude
-            reminder.longitude = storedLongitude
-            reminder.locationName = storedLocationName
+        // Setting up the geofence and start monitoring
+        if switchOutlet.isOn == true {
+            manager.setupGeoFenceAndMonitor(latitude: storedLatitude, longitude: storedLongitude, locationName: storedLocationName)
+            print("latitude: \(storedLatitude) longitude: \(storedLongitude)")
         }
         
         context.saveChanges()
@@ -121,5 +132,5 @@ class AddReminderController: UIViewController, UISearchBarDelegate {
         dismiss(animated: true, completion: nil)
     }
     
-
 }
+

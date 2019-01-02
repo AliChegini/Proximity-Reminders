@@ -11,28 +11,24 @@ import CoreData
 import CoreLocation
 import UserNotifications
 
-class MasterViewController: UITableViewController, CLLocationManagerDelegate, UNUserNotificationCenterDelegate {
+class MasterViewController: UITableViewController, UNUserNotificationCenterDelegate, LocationManagerDelegate {
     
     var managedObjectContext = CoreDataStack().managedObjectContext
+    var locationManager = LocationManager()
     
     lazy var dataSource: DataSource = {
         return DataSource(tableView: self.tableView, context: self.managedObjectContext)
     }()
     
-    let locationManager = CLLocationManager()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
         tableView.dataSource = dataSource
         
-        // Location related 
-//        locationManager.delegate = self
-//        locationManager.requestAlwaysAuthorization()
-//        locationManager.startUpdatingLocation()
-//        locationManager.distanceFilter = 100
-//        let geoFenceRegion: CLCircularRegion = CLCircularRegion(center: CLLocationCoordinate2DMake(item.latitude, item.longitude), radius: 40, identifier: item.text)
-        
+        // root view controller act as the delegate
+        // this is the view which never gets dismissed
+        locationManager.delegate = self
     }
     
     // MARK: - Navigation
@@ -42,6 +38,7 @@ class MasterViewController: UITableViewController, CLLocationManagerDelegate, UN
             if let navigationController = segue.destination as? UINavigationController {
                 if let addReminderController = navigationController.topViewController as? AddReminderController {
                     addReminderController.context = managedObjectContext
+                    addReminderController.manager = locationManager
                 }
             }
         } else if segue.identifier == "showDetail" {
@@ -55,11 +52,22 @@ class MasterViewController: UITableViewController, CLLocationManagerDelegate, UN
         }
     }
     
-
     // MARK: - UITableViewDelegate
     
     override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         return .delete
     }
     
+}
+
+
+extension MasterViewController {
+    // LocationManager Delegate methods
+    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
+        print("user entered \(region)")
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
+        print("user exited \(region)")
+    }
 }
