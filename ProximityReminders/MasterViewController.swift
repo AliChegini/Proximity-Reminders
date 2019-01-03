@@ -15,9 +15,9 @@ class MasterViewController: UITableViewController, UNUserNotificationCenterDeleg
     
     var managedObjectContext = CoreDataStack().managedObjectContext
     var locationManager = LocationManager()
-    
+    // Dependency injection
     lazy var dataSource: DataSource = {
-        return DataSource(tableView: self.tableView, context: self.managedObjectContext)
+        return DataSource(tableView: self.tableView, context: self.managedObjectContext, manager: self.locationManager)
     }()
     
 
@@ -29,7 +29,18 @@ class MasterViewController: UITableViewController, UNUserNotificationCenterDeleg
         // root view controller act as the delegate
         // this is the view which never gets dismissed
         locationManager.delegate = self
+        
+        // User notification center delegate
+        UNUserNotificationCenter.current().delegate = self
+        
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { (didAllow, error) in
+            if let error = error {
+                print(error)
+            }
+        }
+        
     }
+    
     
     // MARK: - Navigation
     
@@ -47,6 +58,7 @@ class MasterViewController: UITableViewController, UNUserNotificationCenterDeleg
                     let item = dataSource.object(at: indexPath)
                     detailViewController.reminder = item
                     detailViewController.context = managedObjectContext
+                    detailViewController.manager = locationManager
                 }
             }
         }
@@ -60,14 +72,48 @@ class MasterViewController: UITableViewController, UNUserNotificationCenterDeleg
     
 }
 
-
+// LocationManager Delegate methods
 extension MasterViewController {
-    // LocationManager Delegate methods
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
-        print("user entered \(region)")
+        setupNotification(type: "Entry Notification", body: "You have entered \(region.identifier)")
+        print("enter notification is setup")
     }
     
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
-        print("user exited \(region)")
+        setupNotification(type: "Exit Notification", body: "You have exited \(region.identifier)")
+        print("exit notification is setup")
+    }
+}
+
+
+
+// User Notification methods
+extension MasterViewController {
+    
+    func setupNotification(type: String, body: String) {
+        let content = UNMutableNotificationContent()
+        content.title = type
+        content.body = body
+        content.sound = UNNotificationSound.default
+        
+        //let trigger = UNLocationNotificationTrigger(region: region, repeats: true)
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1.0, repeats: false)
+        
+        let request = UNNotificationRequest(identifier: "Reminder", content: content, trigger: trigger)
+        
+        UNUserNotificationCenter.current().add(request) { (error) in
+            if let error = error {
+                print(error)
+            }
+        }
+    }
+    
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        completionHandler()
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler([.alert, .sound])
     }
 }

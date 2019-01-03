@@ -10,17 +10,19 @@ import UIKit
 import CoreData
 
 class DataSource: NSObject, UITableViewDataSource {
+    // the following will be used for dependency injection
     private let tableView: UITableView
-    // context will be used for dependency injection
     var context: NSManagedObjectContext
+    var manager: LocationManager
     
     lazy var fetchedResultsController: ReminderFetchedResultsController = {
         return ReminderFetchedResultsController(managedObjectContext: self.context, tableView: self.tableView)
     }()
     
-    init(tableView: UITableView, context: NSManagedObjectContext) {
+    init(tableView: UITableView, context: NSManagedObjectContext, manager: LocationManager) {
         self.tableView = tableView
         self.context = context
+        self.manager = manager
     }
     
     func object(at indexPath: IndexPath) -> Reminder {
@@ -52,6 +54,9 @@ class DataSource: NSObject, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         let item = fetchedResultsController.object(at: indexPath)
+        // turning off monitoring if reminder is getting deleted
+        manager.stopMonitoring(latitude: item.latitude, longitude: item.longitude, locationName: item.locationName)
+        
         context.delete(item)
         context.saveChanges()
     }

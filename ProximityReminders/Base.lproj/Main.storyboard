@@ -103,7 +103,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="HPv-D8-TV6">
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HPv-D8-TV6">
                                 <rect key="frame" x="30" y="194" width="315" height="443"/>
                                 <connections>
                                     <outlet property="delegate" destination="PhC-Ab-kcw" id="4Hn-gg-tjK"/>
@@ -195,7 +195,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Qkk-yh-1V9">
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Qkk-yh-1V9">
                                 <rect key="frame" x="30" y="194" width="315" height="373"/>
                                 <connections>
                                     <outlet property="delegate" destination="PhC-Ab-kcw" id="KXh-4X-txm"/>

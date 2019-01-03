@@ -14,6 +14,7 @@ class DetailViewController: UIViewController {
 
     var reminder: Reminder?
     var context: NSManagedObjectContext!
+    var manager: LocationManager!
     
     @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var reminderSwitch: UISwitch!
@@ -45,11 +46,19 @@ class DetailViewController: UIViewController {
     }
     
     
-    
     @IBAction func save(_ sender: UIBarButtonItem) {
         if let reminder = reminder, let newText = textField.text {
             reminder.text = newText
             reminder.reminderState = reminderSwitch.isOn
+            
+            // turning off monitoring if switch is off
+            if reminderSwitch.isOn == false {
+                manager.stopMonitoring(latitude: reminder.latitude, longitude: reminder.longitude, locationName: reminder.locationName)
+            } else if reminderSwitch.isOn == true {
+                // turning on monitoring if switch is on
+                manager.setupGeoFenceAndMonitor(latitude: reminder.latitude, longitude: reminder.longitude, locationName: reminder.locationName)
+            }
+            
             context.saveChanges()
             navigationController?.navigationController?.popViewController(animated: true)
         }
@@ -58,11 +67,13 @@ class DetailViewController: UIViewController {
     
     @IBAction func deleteItem(_ sender: UIButton) {
         if let reminder = reminder {
+            // turning off monitoring if reminder is getting deleted
+            manager.stopMonitoring(latitude: reminder.latitude, longitude: reminder.longitude, locationName: reminder.locationName)
+    
             context.delete(reminder)
             context.saveChanges()
             navigationController?.navigationController?.popViewController(animated: true)
         }
     }
-    
     
 }

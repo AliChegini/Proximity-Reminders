@@ -36,11 +36,8 @@ extension NSManagedObjectContext {
             do {
                 try save()
             } catch {
-                // TODO : alert user something went wrong
+                print("Error While saving data \(error)")
             }
         }
     }
 }
-
-
-

@@ -39,7 +39,6 @@ class AddReminderController: UIViewController, UISearchBarDelegate {
         let searchController = UISearchController(searchResultsController: nil)
         searchController.searchBar.delegate = self
         present(searchController, animated: true, completion: nil)
-        
     }
     
     
@@ -58,7 +57,6 @@ class AddReminderController: UIViewController, UISearchBarDelegate {
         let activeSearch = MKLocalSearch(request: searchRequest)
         
         activeSearch.start { (response, error) in
-            
             UIApplication.shared.endIgnoringInteractionEvents()
             
             if response == nil {
@@ -68,7 +66,7 @@ class AddReminderController: UIViewController, UISearchBarDelegate {
                 let annotations = self.mapView.annotations
                 self.mapView.removeAnnotations(annotations)
                 
-                // Getting coordinates
+                // Getting coordinates of the user's search
                 guard let latitude = response?.boundingRegion.center.latitude else {
                     return
                 }
@@ -86,6 +84,7 @@ class AddReminderController: UIViewController, UISearchBarDelegate {
                 annotation.coordinate = CLLocationCoordinate2DMake(latitude, longitude)
                 self.mapView.addAnnotation(annotation)
                 
+                
                 // Zooming on annotation
                 let coordinate: CLLocationCoordinate2D = CLLocationCoordinate2DMake(latitude, longitude)
                 let span = MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
@@ -98,7 +97,6 @@ class AddReminderController: UIViewController, UISearchBarDelegate {
     
     
     @IBAction func save(_ sender: UIBarButtonItem) {
-        
         guard let reminder = NSEntityDescription.insertNewObject(forEntityName: "Reminder", into: context) as? Reminder else {
             return
         }
@@ -117,19 +115,34 @@ class AddReminderController: UIViewController, UISearchBarDelegate {
         reminder.longitude = storedLongitude
         reminder.locationName = storedLocationName
         
-        // Setting up the geofence and start monitoring
-        if switchOutlet.isOn == true {
-            manager.setupGeoFenceAndMonitor(latitude: storedLatitude, longitude: storedLongitude, locationName: storedLocationName)
-            print("latitude: \(storedLatitude) longitude: \(storedLongitude)")
+        // Check limit of 20 regions
+        if manager.numberOfUnderWatchedRegions() < manager.limitForUnderWatchedRegions {
+            // Setting up the geofence and start monitoring
+            if switchOutlet.isOn == true {
+                manager.setupGeoFenceAndMonitor(latitude: storedLatitude, longitude: storedLongitude, locationName: storedLocationName)
+                print("latitude: \(storedLatitude) longitude: \(storedLongitude)")
+            }
+            
+            context.saveChanges()
+        } else {
+            // show alert to user
+            showAlert()
         }
         
-        context.saveChanges()
         dismiss(animated: true, completion: nil)
+        
     }
+    
     
     
     @IBAction func cancel(_ sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
+    }
+    
+    func showAlert() {
+        let alert  = UIAlertController(title: "Limit", message: "You can only monitor 20 locations at a time", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
     }
     
 }
